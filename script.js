@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ============ NAVBAR SCROLL ============
     const navbar = document.querySelector('.navbar');
-    const scrollTop = document.getElementById('scrollTop');
 
     window.addEventListener('scroll', () => {
         if (window.scrollY > 80) {
@@ -34,17 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             navbar.classList.remove('scrolled');
         }
-
-        if (window.scrollY > 500) {
-            scrollTop.classList.add('visible');
-        } else {
-            scrollTop.classList.remove('visible');
-        }
-    });
-
-    // ============ SCROLL TO TOP ============
-    scrollTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // ============ MOBILE MENU ============
@@ -56,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.classList.toggle('active');
     });
 
-    // Close menu on link click
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             mobileMenuBtn.classList.remove('active');
@@ -64,25 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ============ CONTENT TABS ============
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tab = btn.dataset.tab;
-
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabContents.forEach(c => c.classList.remove('active'));
-
-            btn.classList.add('active');
-            document.getElementById(tab).classList.add('active');
-        });
-    });
-
     // ============ ANIMATED COUNTER ============
     const statNumbers = document.querySelectorAll('.stat-number');
-    let countersStarted = false;
 
     function animateCounters() {
         statNumbers.forEach(stat => {
@@ -102,44 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ============ INTERSECTION OBSERVER ============
-    const observerOptions = {
-        threshold: 0.2,
-        rootMargin: '0px'
-    };
-
-    // Animate counters when hero stats are visible
-    const statsObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !countersStarted) {
-                countersStarted = true;
-                animateCounters();
-            }
-        });
-    }, observerOptions);
-
     const heroStats = document.querySelector('.hero-stats');
     if (heroStats) {
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
         statsObserver.observe(heroStats);
     }
-
-    // Animate cards on scroll
-    const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                cardObserver.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.feature-card, .content-card, .step-card, .screenshot-item').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-        cardObserver.observe(card);
-    });
 
     // ============ DOWNLOAD MODAL ============
     const APK_URL = 'https://apk.e-droid.net/apk/app3908708-dfl5vy.apk?v=4';
@@ -165,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Close modal on overlay click
     downloadModal.addEventListener('click', (e) => {
         if (e.target === downloadModal) {
             downloadModal.classList.remove('active');
@@ -209,43 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         modalText.textContent = 'يرجى الانتظار...';
         modalDownloadBtn.style.display = 'none';
     }
-
-    // ============ SMOOTH SCROLL ============
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-
-            const target = document.querySelector(targetId);
-            if (target) {
-                e.preventDefault();
-                const navHeight = navbar.offsetHeight;
-                const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight;
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-            }
-        });
-    });
-
-    // ============ ACTIVE NAV LINK ============
-    const sections = document.querySelectorAll('section[id]');
-
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY + 100;
-
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.offsetHeight;
-            const sectionId = section.getAttribute('id');
-            const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
-
-            if (navLink) {
-                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                    document.querySelectorAll('.nav-links a').forEach(a => a.style.color = '');
-                    navLink.style.color = '#8B5CF6';
-                }
-            }
-        });
-    });
 
     // ============ KEYBOARD ACCESSIBILITY ============
     document.addEventListener('keydown', (e) => {
