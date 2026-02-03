@@ -142,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ============ DOWNLOAD MODAL ============
+    const APK_URL = 'https://apk.e-droid.net/apk/app3908708-dfl5vy.apk?v=4';
     const downloadBtn = document.getElementById('downloadBtn');
     const downloadModal = document.getElementById('downloadModal');
     const modalClose = document.getElementById('modalClose');
@@ -188,6 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 clearInterval(interval);
                 progressFill.style.width = '100%';
                 modalText.textContent = 'الملف جاهز للتحميل!';
+                modalDownloadBtn.href = APK_URL;
                 modalDownloadBtn.style.display = 'inline-flex';
                 return;
             }

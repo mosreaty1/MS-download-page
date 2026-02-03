@@ -1035,20 +1035,11 @@ img {
     box-shadow: var(--shadow-md);
 }
 
-.qr-placeholder {
-    text-align: center;
-    color: var(--bg-primary);
-    font-weight: 900;
-}
-
-.qr-placeholder span {
-    display: block;
-    font-size: 2rem;
-}
-
-.qr-placeholder small {
-    font-size: 0.7rem;
-    color: var(--text-muted);
+.qr-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
 }
 
 .qr-section > p {
