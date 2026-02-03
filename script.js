@@ -35,56 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ============ MOBILE MENU ============
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const navLinks = document.querySelector('.nav-links');
-
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenuBtn.classList.toggle('active');
-        navLinks.classList.toggle('active');
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            mobileMenuBtn.classList.remove('active');
-            navLinks.classList.remove('active');
-        });
-    });
-
-    // ============ ANIMATED COUNTER ============
-    const statNumbers = document.querySelectorAll('.stat-number');
-
-    function animateCounters() {
-        statNumbers.forEach(stat => {
-            const target = parseInt(stat.dataset.target);
-            const duration = 2000;
-            const step = target / (duration / 16);
-            let current = 0;
-
-            const timer = setInterval(() => {
-                current += step;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-                stat.textContent = Math.floor(current).toLocaleString('ar-EG');
-            }, 16);
-        });
-    }
-
-    const heroStats = document.querySelector('.hero-stats');
-    if (heroStats) {
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.2 });
-        statsObserver.observe(heroStats);
-    }
-
     // ============ DOWNLOAD MODAL ============
     const APK_URL = 'https://apk.e-droid.net/apk/app3908708-dfl5vy.apk?v=4';
     const downloadBtn = document.getElementById('downloadBtn');
@@ -158,8 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') {
             downloadModal.classList.remove('active');
             resetProgress();
-            navLinks.classList.remove('active');
-            mobileMenuBtn.classList.remove('active');
         }
     });
 
